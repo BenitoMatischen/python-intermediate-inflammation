@@ -2,8 +2,10 @@
 
 import numpy as np
 import numpy.testing as npt
-
 import pytest
+
+from inflammation.models import daily_mean, patient_normalise
+from inflammation.compute_data import CSVDataSource
 
 from inflammation.models import daily_mean, daily_max, daily_min
 
@@ -31,6 +33,18 @@ def test_daily_max():
 def test_daily_min():
     """Test that min function works for an array of positive integers."""
 
+@pytest.mark.parametrize(
+    "test_input, expected",
+    [
+        (np.array([[0, 0], [0, 0], [0, 0]]), np.array([0, 0])),
+        (np.array([[1, 2], [3, 4], [5, 6]]), np.array([3, 4])),
+    ]
+)
+def test_load_inflammation_data(test_input, expected):
+    data_source = CSVDataSource('data/')
+    data = data_source.load_inflammation_data()
+    assert len(data) == 12
+    
 @pytest.mark.parametrize(
     "test, expected, expect_raises",
     [
