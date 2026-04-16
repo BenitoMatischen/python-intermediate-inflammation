@@ -4,7 +4,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from inflammation.models import daily_mean
+from inflammation.models import daily_mean, patient_normalise
 from inflammation.compute_data import CSVDataSource
 
 from inflammation.models import daily_mean, daily_max, daily_min
@@ -44,6 +44,8 @@ def test_load_inflammation_data(test_input, expected):
     data_source = CSVDataSource('data/')
     data = data_source.load_inflammation_data()
     assert len(data) == 12
+    
+@pytest.mark.parametrize(
     "test, expected, expect_raises",
     [
         (
